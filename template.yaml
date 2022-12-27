@@ -116,7 +116,7 @@ Resources:
           "attributeValues" : {
               "userId": {  "S": "${context.arguments.sub}" },
               "username": {  "S": "${context.arguments.username}" },
-              "id": {  "S": "${context.arguments.sub}" },
+              "id": {  "S": "${context.arguments.id}" },
               "registered": {  "BOOL": true }
           }
         }
