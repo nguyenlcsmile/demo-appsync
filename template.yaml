@@ -132,7 +132,7 @@ Resources:
 
         type Subscription {
           #  Subscribes to all new messages in a given Conversation.
-          subscribeToNewUsers: User
+          subscribeToNewUsers(filter: ModelSubscriptionTodoFilterInput): User
         		@aws_subscribe(mutations: ["createUser"])
         }
 
