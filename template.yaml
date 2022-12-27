@@ -134,8 +134,6 @@ Resources:
           createdAt: String
           #  A unique identifier for the Conversation.
           id: ID!
-          #  The Conversation's messages.
-          messages(after: String, first: Int): MessageConnection
           #  The Conversation's name.
           name: String!
         }
