@@ -95,6 +95,7 @@ Resources:
         schema {
           query: Query
           mutation: Mutation
+          subscription: Subscription
         }
 
         type Mutation {
@@ -155,7 +156,7 @@ Resources:
               "userId": {  "S": "${context.arguments.userId}" },
               "id": {  "S": "${context.arguments.id}" },
               "username": {  "S": "${context.arguments.username}" },
-              "registered": {  "BOOL": true }
+              "registered": {  "BOOL": "${context.arguments.registered}" }
           }
         }
       ResponseMappingTemplate: |
