@@ -113,10 +113,13 @@ Resources:
         {
           "version" : "2017-02-28",
           "operation" : "PutItem",
+          "key" : {
+              "userId" : { "S" : "${context.arguments.userId}" }
+          },
           "attributeValues" : {
-              "userId": {  "S": "${context.arguments.sub}" },
-              "username": {  "S": "${context.arguments.username}" },
+              "userId": {  "S": "${context.arguments.userId}" },
               "id": {  "S": "${context.arguments.id}" },
+              "username": {  "S": "${context.arguments.username}" },
               "registered": {  "BOOL": true }
           }
         }
