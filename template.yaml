@@ -94,13 +94,9 @@ Resources:
 
         type User {
           #  A unique identifier for the user.
-          cognitoId: ID!
-          #  A user's enrolled Conversations. This is an interesting case. This is an interesting pagination case.
-          conversations(after: String, first: Int): UserConverstationsConnection
+          userId: ID!
           #  Generated id for a user. read-only
           id: ID!
-          #  Get a users messages by querying a GSI on the Messages table.
-          messages(after: String, first: Int): MessageConnection
           #  The username
           username: String!
           # is the user registered?
