@@ -9,6 +9,19 @@ AWSTemplateFormatVersion: "2010-09-09"
 #     Value: !GetAtt chatQLApi.GraphQLUrl
 
 Resources:
+  conversationsTable:
+    Type: "AWS::DynamoDB::Table"
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: "id"
+          AttributeType: "S"
+      KeySchema:
+        - AttributeName: "id"
+          KeyType: "HASH"
+      ProvisionedThroughput:
+        ReadCapacityUnits: "5"
+        WriteCapacityUnits: "5"
+
   usersTable:
     Type: "AWS::DynamoDB::Table"
     Properties:
