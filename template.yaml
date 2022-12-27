@@ -107,12 +107,12 @@ Resources:
 
         type Query {
           #  Scan through all values of type 'User'. Use the 'after' and 'before' arguments with the 'nextToken' returned by the 'UserConnection' result to fetch pages.
-          allUser(after: String, first: Int): [User]
+          allUser(after: String, first: Int): [User] @aws_api_key
           #  Get my user.
           me: User
         }
 
-        type User {
+        type User @aws_api_key {
           #  A unique identifier for the user.
           userId: ID!
           #  Generated id for a user. read-only
@@ -121,7 +121,7 @@ Resources:
           username: String!
         }
 
-        type Conversation {
+        type Conversation @aws_api_key {
           #  The Conversation's timestamp.
           createdAt: String!
           #  A unique identifier for the Conversation.
@@ -133,7 +133,7 @@ Resources:
         type Subscription {
           #  Subscribes to all new messages in a given Conversation.
           subscribeToNewUsers: User
-        		@aws_subscribe(mutations: ["createUser"])
+        		@aws_subscribe(mutations: ["createUser"] @aws_api_key)
         }
 
   createUserMutationResolver:
