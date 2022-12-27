@@ -100,40 +100,40 @@ Resources:
 
         type Mutation {
           #  Create a Conversation. Use some of the cooked in template functions for UUID and DateTime.
-          createConversation(createdAt: String!, id: ID!, name: String!): Conversation
+          createConversation(createdAt: String, id: String, name: String): Conversation
           #  Put a single value of type 'User'. If an item does not exist with the same key the item will be created. If there exists an item at that key already, it will be updated.
-          createUser(userId: String!, id: ID!, username: String!): User
+          createUser(userId: String, id: String, username: String): User
         }
 
         type Query {
           #  Scan through all values of type 'User'. Use the 'after' and 'before' arguments with the 'nextToken' returned by the 'UserConnection' result to fetch pages.
-          allUser(after: String, first: Int): [User] @aws_api_key
+          allUser(after: String, first: Int): [User]
           #  Get my user.
           me: User
         }
 
-        type User @aws_api_key {
+        type User {
           #  A unique identifier for the user.
-          userId: ID!
+          userId: String
           #  Generated id for a user. read-only
-          id: ID!
+          id: String
           #  The username
-          username: String!
+          username: String
         }
 
-        type Conversation @aws_api_key {
+        type Conversation {
           #  The Conversation's timestamp.
-          createdAt: String!
+          createdAt: String
           #  A unique identifier for the Conversation.
-          id: ID!
+          id: String
           #  The Conversation's name.
-          name: String!
+          name: String
         }
 
         type Subscription {
           #  Subscribes to all new messages in a given Conversation.
           subscribeToNewUsers: User
-        		@aws_subscribe(mutations: ["createUser"] @aws_api_key)
+        		@aws_subscribe(mutations: ["createUser"])
         }
 
   createUserMutationResolver:
