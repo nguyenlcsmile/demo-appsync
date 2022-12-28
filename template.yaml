@@ -98,42 +98,237 @@ Resources:
           subscription: Subscription
         }
 
-        type Mutation {
-          #  Create a Conversation. Use some of the cooked in template functions for UUID and DateTime.
-          createConversation(createdAt: String, id: String, name: String): Conversation
-          #  Put a single value of type 'User'. If an item does not exist with the same key the item will be created. If there exists an item at that key already, it will be updated.
-          createUser(userId: String, id: String, username: String): User
+        type User {
+          id: ID!
+          username: String!
+          email: String!
+          phone: String!
+          address: String!
+          createdAt: AWSDateTime!
+          updatedAt: AWSDateTime!
+        }
+
+        input ModelStringInput {
+          ne: String
+          eq: String
+          le: String
+          lt: String
+          ge: String
+          gt: String
+          contains: String
+          notContains: String
+          between: [String]
+          beginsWith: String
+          attributeExists: Boolean
+          attributeType: ModelAttributeTypes
+          size: ModelSizeInput
+        }
+
+        input ModelIntInput {
+          ne: Int
+          eq: Int
+          le: Int
+          lt: Int
+          ge: Int
+          gt: Int
+          between: [Int]
+          attributeExists: Boolean
+          attributeType: ModelAttributeTypes
+        }
+
+        input ModelFloatInput {
+          ne: Float
+          eq: Float
+          le: Float
+          lt: Float
+          ge: Float
+          gt: Float
+          between: [Float]
+          attributeExists: Boolean
+          attributeType: ModelAttributeTypes
+        }
+
+        input ModelBooleanInput {
+          ne: Boolean
+          eq: Boolean
+          attributeExists: Boolean
+          attributeType: ModelAttributeTypes
+        }
+
+        input ModelIDInput {
+          ne: ID
+          eq: ID
+          le: ID
+          lt: ID
+          ge: ID
+          gt: ID
+          contains: ID
+          notContains: ID
+          between: [ID]
+          beginsWith: ID
+          attributeExists: Boolean
+          attributeType: ModelAttributeTypes
+          size: ModelSizeInput
+        }
+
+        input ModelSubscriptionStringInput {
+          ne: String
+          eq: String
+          le: String
+          lt: String
+          ge: String
+          gt: String
+          contains: String
+          notContains: String
+          between: [String]
+          beginsWith: String
+          in: [String]
+          notIn: [String]
+        }
+
+        input ModelSubscriptionIntInput {
+          ne: Int
+          eq: Int
+          le: Int
+          lt: Int
+          ge: Int
+          gt: Int
+          between: [Int]
+          in: [Int]
+          notIn: [Int]
+        }
+
+        input ModelSubscriptionFloatInput {
+          ne: Float
+          eq: Float
+          le: Float
+          lt: Float
+          ge: Float
+          gt: Float
+          between: [Float]
+          in: [Float]
+          notIn: [Float]
+        }
+
+        input ModelSubscriptionBooleanInput {
+          ne: Boolean
+          eq: Boolean
+        }
+
+        input ModelSubscriptionIDInput {
+          ne: ID
+          eq: ID
+          le: ID
+          lt: ID
+          ge: ID
+          gt: ID
+          contains: ID
+          notContains: ID
+          between: [ID]
+          beginsWith: ID
+          in: [ID]
+          notIn: [ID]
+        }
+
+        enum ModelAttributeTypes {
+          binary
+          binarySet
+          bool
+          list
+          map
+          number
+          numberSet
+          string
+          stringSet
+          _null
+        }
+
+        input ModelSizeInput {
+          ne: Int
+          eq: Int
+          le: Int
+          lt: Int
+          ge: Int
+          gt: Int
+          between: [Int]
+        }
+
+        enum ModelSortDirection {
+          ASC
+          DESC
+        }
+
+        type ModelUserConnection {
+          items: [User]!
+          nextToken: String
+        }
+
+        input ModelUserFilterInput {
+          id: ModelIDInput
+          username: ModelStringInput
+          email: ModelStringInput
+          phone: ModelStringInput
+          address: ModelStringInput
+          and: [ModelUserFilterInput]
+          or: [ModelUserFilterInput]
+          not: ModelUserFilterInput
         }
 
         type Query {
-          #  Scan through all values of type 'User'. Use the 'after' and 'before' arguments with the 'nextToken' returned by the 'UserConnection' result to fetch pages.
-          allUser(after: String, first: Int): [User]
-          #  Get my user.
-          me: User
+          getUser(id: ID!): User
+          listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
         }
 
-        type User {
-          #  A unique identifier for the user.
-          userId: String
-          #  Generated id for a user. read-only
-          id: String
-          #  The username
+        input ModelUserConditionInput {
+          username: ModelStringInput
+          email: ModelStringInput
+          phone: ModelStringInput
+          address: ModelStringInput
+          and: [ModelUserConditionInput]
+          or: [ModelUserConditionInput]
+          not: ModelUserConditionInput
+        }
+
+        input CreateUserInput {
+          id: ID
+          username: String!
+          email: String!
+          phone: String!
+          address: String!
+        }
+
+        input UpdateUserInput {
+          id: ID!
           username: String
+          email: String
+          phone: String
+          address: String
         }
 
-        type Conversation {
-          #  The Conversation's timestamp.
-          createdAt: String
-          #  A unique identifier for the Conversation.
-          id: String
-          #  The Conversation's name.
-          name: String
+        input DeleteUserInput {
+          id: ID!
+        }
+
+        type Mutation {
+          createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
+          updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
+          deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
+        }
+
+        input ModelSubscriptionUserFilterInput {
+          id: ModelSubscriptionIDInput
+          username: ModelSubscriptionStringInput
+          email: ModelSubscriptionStringInput
+          phone: ModelSubscriptionStringInput
+          address: ModelSubscriptionStringInput
+          and: [ModelSubscriptionUserFilterInput]
+          or: [ModelSubscriptionUserFilterInput]
         }
 
         type Subscription {
-          #  Subscribes to all new messages in a given Conversation.
-          subscribeToNewUsers(filter: ModelSubscriptionTodoFilterInput): User
-        		@aws_subscribe(mutations: ["createUser"])
+          onCreateUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["createUser"])
+          onUpdateUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["updateUser"])
+          onDeleteUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["deleteUser"])
         }
 
   createUserMutationResolver:
