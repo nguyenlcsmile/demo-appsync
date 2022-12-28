@@ -79,11 +79,11 @@ Resources:
         {
           "version": "2018-05-29",
           "payload": {
-            "id": $utils.toJson($context.arguments.id),
-            "username": $utils.toJson($context.arguments.username),
-            "email": $utils.toJson($context.arguments.email),
-            "phone": $utils.toJson($context.arguments.phone),
-            "address": $utils.toJson($context.arguments.address)
+            "id": $util.toJson($context.arguments.id),
+            "username": $util.toJson($context.arguments.username),
+            "email": $util.toJson($context.arguments.email),
+            "phone": $util.toJson($context.arguments.phone),
+            "address": $util.toJson($context.arguments.address)
           }
         }
       ResponseMappingTemplate: |
