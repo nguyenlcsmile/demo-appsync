@@ -284,7 +284,7 @@ Resources:
       RequestMappingTemplate: |
         {
           "version" : "2017-02-28",
-          "operation" : "PutItem",
+          "payload": $util.toJson($context.arguments)
         }
       ResponseMappingTemplate: |
         $utils.toJson($context.result)
