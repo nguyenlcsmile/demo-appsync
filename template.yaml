@@ -53,8 +53,16 @@ Resources:
           datetime: String
         }
 
+        input ModelSubscriptionTodoFilterInput {
+          id: ModelSubscriptionIDInput
+          name: ModelSubscriptionStringInput
+          description: ModelSubscriptionStringInput
+          and: [ModelSubscriptionTodoFilterInput]
+          or: [ModelSubscriptionTodoFilterInput]
+        }
+
         type Subscription {
-          subscribeToNewMessage: SampleData
+          subscribeToNewMessage(filter: ModelSubscriptionTodoFilterInput): SampleData
             @aws_subscribe(mutations:["addSampleData"])
         }
   addSampleDataResolver:
