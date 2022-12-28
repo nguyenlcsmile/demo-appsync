@@ -283,6 +283,8 @@ Resources:
       DataSourceName: !GetAtt usersTableDataSource.Name
       RequestMappingTemplate: |
         {
-          "version" : "2017-02-28"
+          "version" : "2017-02-28",
+          "operation" : "PutItem",
         }
-      ResponseMappingTemplate: "$util.toJson($context.result)"
+      ResponseMappingTemplate: |
+        $utils.toJson($context.result)
