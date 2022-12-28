@@ -79,4 +79,4 @@ Resources:
           "payload": $util.toJson($context.arguments)
         }
       ResponseMappingTemplate: |
-        $utils.toJson($context.result)
+        $util.toJson($context.result)
