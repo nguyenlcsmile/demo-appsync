@@ -44,10 +44,11 @@ Resources:
         }
 
         type Mutation {
-          addSampleData(key: String!): SampleData
+          addSampleData(id: ID!, key: String!): SampleData
         }
 
         type SampleData {
+          id: ID!
           key: String!
           datetime: String
         }
@@ -69,11 +70,13 @@ Resources:
         {
           "version": "2018-05-29",
           "payload": {
+            "id": $util.toJson($context.arguments.id),
             "key": $util.toJson($context.arguments.key)
           }
         }
       ResponseMappingTemplate: |
         {
+          "id": $util.toJson($context.result.id),
           "key": $util.toJson($context.result.key),
           "datetime": $util.toJson($util.time.nowFormatted("yyyy-MM-dd HH:mm:ssZ"))
         }
