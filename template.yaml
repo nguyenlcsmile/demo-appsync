@@ -281,5 +281,8 @@ Resources:
       TypeName: "Mutation"
       FieldName: "createUser"
       DataSourceName: !GetAtt usersTableDataSource.Name
-      RequestMappingTemplate: "{}"
+      RequestMappingTemplate: |
+        {
+          "version" : "2017-02-28"
+        }
       ResponseMappingTemplate: "$util.toJson($context.result)"
