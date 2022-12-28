@@ -274,10 +274,25 @@ Resources:
           onDeleteUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["deleteUser"])
         }
 
-  createUser:
-    Type: "AWS::AppSync::Resolver"
-    Properties:
-      ApiId: !GetAtt chatQLApi.ApiId
-      TypeName: "Mutation"
-      FieldName: "createUser"
-      DataSourceName: !GetAtt usersTableDataSource.Name
+  # createUser:
+  #   Type: "AWS::AppSync::Resolver"
+  #   Properties:
+  #     ApiId: !GetAtt chatQLApi.ApiId
+  #     TypeName: "Mutation"
+  #     FieldName: "createUser"
+  #     DataSourceName: !GetAtt usersTableDataSource.Name
+  #     RequestMappingTemplate: |
+  #       {
+  #         "version" : "2017-02-28",
+  #         "operation" : "PutItem",
+  #         "key" : {
+  #             "userId" : { "S" : "${context.arguments.userId}" }
+  #         },
+  #         "attributeValues" : {
+  #             "userId": {  "S": "${context.arguments.userId}" },
+  #             "id": {  "S": "${context.arguments.id}" },
+  #             "username": {  "S": "${context.arguments.username}" }
+  #         }
+  #       }
+  #     ResponseMappingTemplate: |
+  #       $utils.toJson($context.result)
