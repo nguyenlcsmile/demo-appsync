@@ -21,6 +21,15 @@ Resources:
       Name: "ChatQL"
       AuthenticationType: "API_KEY"
 
+  usersTableDataSource:
+    Type: "AWS::AppSync::DataSource"
+    Properties:
+      ApiId: !GetAtt chatQLApi.ApiId
+      Name: "usersTableDataSource"
+      Description: ""
+      Type: "AMAZON_DYNAMODB"
+      ServiceRoleArn: !GetAtt awsAppSyncServiceRole.Arn
+
   chatQLSchema:
     Type: "AWS::AppSync::GraphQLSchema"
     Properties:
@@ -271,3 +280,4 @@ Resources:
       ApiId: !GetAtt chatQLApi.ApiId
       TypeName: "Mutation"
       FieldName: "createUser"
+      DataSourceName: !GetAtt usersTableDataSource.Name
