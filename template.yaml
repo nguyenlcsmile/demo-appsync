@@ -36,7 +36,6 @@ Resources:
       ApiId: !GetAtt chatQLApi.ApiId
       Definition: |
         schema {
-          query: Query
           mutation: Mutation
           subscription: Subscription
         }
