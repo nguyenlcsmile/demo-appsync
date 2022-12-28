@@ -28,275 +28,48 @@ Resources:
       Name: DataSource
       Type: NONE
 
-  chatQLSchema:
-    Type: "AWS::AppSync::GraphQLSchema"
+  GraphQLSchema:
+    Type: AWS::AppSync::GraphQLSchema
     Properties:
       ApiId: !GetAtt chatQLApi.ApiId
       Definition: |
         schema {
           query: Query
           mutation: Mutation
-          subscription: Subscription
-        }
-
-        type User {
-          id: ID!
-          username: String!
-          email: String!
-          phone: String!
-          address: String!
-          createdAt: AWSDateTime!
-          updatedAt: AWSDateTime!
-        }
-
-        input ModelStringInput {
-          ne: String
-          eq: String
-          le: String
-          lt: String
-          ge: String
-          gt: String
-          contains: String
-          notContains: String
-          between: [String]
-          beginsWith: String
-          attributeExists: Boolean
-          attributeType: ModelAttributeTypes
-          size: ModelSizeInput
-        }
-
-        input ModelIntInput {
-          ne: Int
-          eq: Int
-          le: Int
-          lt: Int
-          ge: Int
-          gt: Int
-          between: [Int]
-          attributeExists: Boolean
-          attributeType: ModelAttributeTypes
-        }
-
-        input ModelFloatInput {
-          ne: Float
-          eq: Float
-          le: Float
-          lt: Float
-          ge: Float
-          gt: Float
-          between: [Float]
-          attributeExists: Boolean
-          attributeType: ModelAttributeTypes
-        }
-
-        input ModelBooleanInput {
-          ne: Boolean
-          eq: Boolean
-          attributeExists: Boolean
-          attributeType: ModelAttributeTypes
-        }
-
-        input ModelIDInput {
-          ne: ID
-          eq: ID
-          le: ID
-          lt: ID
-          ge: ID
-          gt: ID
-          contains: ID
-          notContains: ID
-          between: [ID]
-          beginsWith: ID
-          attributeExists: Boolean
-          attributeType: ModelAttributeTypes
-          size: ModelSizeInput
-        }
-
-        input ModelSubscriptionStringInput {
-          ne: String
-          eq: String
-          le: String
-          lt: String
-          ge: String
-          gt: String
-          contains: String
-          notContains: String
-          between: [String]
-          beginsWith: String
-          in: [String]
-          notIn: [String]
-        }
-
-        input ModelSubscriptionIntInput {
-          ne: Int
-          eq: Int
-          le: Int
-          lt: Int
-          ge: Int
-          gt: Int
-          between: [Int]
-          in: [Int]
-          notIn: [Int]
-        }
-
-        input ModelSubscriptionFloatInput {
-          ne: Float
-          eq: Float
-          le: Float
-          lt: Float
-          ge: Float
-          gt: Float
-          between: [Float]
-          in: [Float]
-          notIn: [Float]
-        }
-
-        input ModelSubscriptionBooleanInput {
-          ne: Boolean
-          eq: Boolean
-        }
-
-        input ModelSubscriptionIDInput {
-          ne: ID
-          eq: ID
-          le: ID
-          lt: ID
-          ge: ID
-          gt: ID
-          contains: ID
-          notContains: ID
-          between: [ID]
-          beginsWith: ID
-          in: [ID]
-          notIn: [ID]
-        }
-
-        enum ModelAttributeTypes {
-          binary
-          binarySet
-          bool
-          list
-          map
-          number
-          numberSet
-          string
-          stringSet
-          _null
-        }
-
-        input ModelSizeInput {
-          ne: Int
-          eq: Int
-          le: Int
-          lt: Int
-          ge: Int
-          gt: Int
-          between: [Int]
-        }
-
-        enum ModelSortDirection {
-          ASC
-          DESC
-        }
-
-        type ModelUserConnection {
-          items: [User]!
-          nextToken: String
-        }
-
-        input ModelUserFilterInput {
-          id: ModelIDInput
-          username: ModelStringInput
-          email: ModelStringInput
-          phone: ModelStringInput
-          address: ModelStringInput
-          and: [ModelUserFilterInput]
-          or: [ModelUserFilterInput]
-          not: ModelUserFilterInput
         }
 
         type Query {
-          getUser(id: ID!): User
-          listUsers(filter: ModelUserFilterInput, limit: Int, nextToken: String): ModelUserConnection
-        }
-
-        input ModelUserConditionInput {
-          username: ModelStringInput
-          email: ModelStringInput
-          phone: ModelStringInput
-          address: ModelStringInput
-          and: [ModelUserConditionInput]
-          or: [ModelUserConditionInput]
-          not: ModelUserConditionInput
-        }
-
-        input CreateUserInput {
-          id: ID
-          username: String!
-          email: String!
-          phone: String!
-          address: String!
-        }
-
-        input UpdateUserInput {
-          id: ID!
-          username: String
-          email: String
-          phone: String
-          address: String
-        }
-
-        input DeleteUserInput {
-          id: ID!
+          listSampleDatas: [SampleData]
         }
 
         type Mutation {
-          createUser(input: CreateUserInput!, condition: ModelUserConditionInput): User
-          updateUser(input: UpdateUserInput!, condition: ModelUserConditionInput): User
-          deleteUser(input: DeleteUserInput!, condition: ModelUserConditionInput): User
+          addSampleData(key: String!): SampleData
         }
 
-        input ModelSubscriptionUserFilterInput {
-          id: ModelSubscriptionIDInput
-          username: ModelSubscriptionStringInput
-          email: ModelSubscriptionStringInput
-          phone: ModelSubscriptionStringInput
-          address: ModelSubscriptionStringInput
-          and: [ModelSubscriptionUserFilterInput]
-          or: [ModelSubscriptionUserFilterInput]
+        type SampleData {
+          key: String!
+          datetime: String
         }
 
-        type Subscription {
-          onCreateUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["createUser"])
-          onUpdateUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["updateUser"])
-          onDeleteUser(filter: ModelSubscriptionUserFilterInput): User @aws_subscribe(mutations: ["deleteUser"])
-        }
-
-  createUser:
-    Type: "AWS::AppSync::Resolver"
+  addSampleDataResolver:
+    Type: AWS::AppSync::Resolver
+    DependsOn:
+      - GraphQLSchema
     Properties:
       ApiId: !GetAtt chatQLApi.ApiId
-      TypeName: "Mutation"
-      FieldName: "createUser"
       DataSourceName: !GetAtt DataSource.Name
+      FieldName: addSampleData
+      Kind: UNIT
       RequestMappingTemplate: |
         {
           "version": "2018-05-29",
           "payload": {
-            "id": $util.toJson($context.arguments.id),
-            "username": $util.toJson($context.arguments.username),
-            "email": $util.toJson($context.arguments.email),
-            "phone": $util.toJson($context.arguments.phone),
-            "address": $util.toJson($context.arguments.address)
+            "key": $util.toJson($context.arguments.key)
           }
         }
       ResponseMappingTemplate: |
         {
-          "id": $util.toJson($context.result.id),
-          "username": $util.toJson($context.result.username),
-          "email": $util.toJson($context.result.email),
-          "phone": $util.toJson($context.result.phone),
-          "address": $util.toJson($context.result.address),
-          "createdAt": $util.toJson($util.time.nowFormatted("yyyy-MM-dd HH:mm:ssZ")),
-          "updatedAt": $util.toJson($util.time.nowFormatted("yyyy-MM-dd HH:mm:ssZ"))
+          "key": $util.toJson($context.result.key),
+          "datetime": $util.toJson($util.time.nowFormatted("yyyy-MM-dd HH:mm:ssZ"))
         }
+      TypeName: Mutation
