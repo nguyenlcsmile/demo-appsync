@@ -281,12 +281,5 @@ Resources:
       TypeName: "Mutation"
       FieldName: "createUser"
       DataSourceName: !GetAtt usersTableDataSource.Name
-      RequestMappingTemplate: |
-        Fn::Join:
-        - ''
-        - - |-
-            $util.qr($ctx.stash.put("typeName", "Mutation"))
-            $util.qr($ctx.stash.put("fieldName", "createUser"))
-            $util.qr($ctx.stash.put("conditions", []))
-          - |-
-      ResponseMappingTemplate: "$util.toJson($ctx.prev.result)"
+      RequestMappingTemplate: "{}"
+      ResponseMappingTemplate: "$util.toJson($context.result)"
