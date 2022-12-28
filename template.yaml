@@ -41,7 +41,7 @@ Resources:
         }
 
         type User {
-          id: ID!
+          id: String!
           username: String!
           email: String!
           phone: String!
@@ -51,7 +51,7 @@ Resources:
         }
 
         input CreateUserInput {
-          id: ID
+          id: String!
           username: String!
           email: String!
           phone: String!
