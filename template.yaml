@@ -284,7 +284,9 @@ Resources:
       RequestMappingTemplate: |
         {
           "version": "2018-05-29",
-          "payload": $util.toJson($context.arguments)
+          "payload": {
+            "arguments":  $utils.toJson($context.arguments)
+          }
         }
       ResponseMappingTemplate: |
         $util.toJson($context.result)
