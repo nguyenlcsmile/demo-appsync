@@ -27,7 +27,7 @@ Resources:
       ApiId: !GetAtt chatQLApi.ApiId
       Name: "usersTableDataSource"
       Description: ""
-      Type: ""
+      Type: "NONE"
       ServiceRoleArn: !GetAtt awsAppSyncServiceRole.Arn
 
   chatQLSchema:
