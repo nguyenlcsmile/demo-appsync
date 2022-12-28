@@ -51,6 +51,10 @@ Resources:
           datetime: String
         }
 
+        type Subscription {
+          subscribeToNewMessage: SampleData
+            @aws_subscribe(mutations:["addSampleData"])
+        }
   addSampleDataResolver:
     Type: AWS::AppSync::Resolver
     DependsOn:
