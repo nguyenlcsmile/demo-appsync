@@ -288,4 +288,5 @@ Resources:
             $util.qr($ctx.stash.put("typeName", "Mutation"))
             $util.qr($ctx.stash.put("fieldName", "createUser"))
             $util.qr($ctx.stash.put("conditions", []))
+          - |-
       ResponseMappingTemplate: "$util.toJson($ctx.prev.result)"
