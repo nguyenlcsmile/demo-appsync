@@ -79,8 +79,20 @@ Resources:
         {
           "version": "2018-05-29",
           "payload": {
-            "arguments":  $utils.toJson($context.arguments)
+            "id": $utils.toJson($context.arguments.id),
+            "username": $utils.toJson($context.arguments.username),
+            "email": $utils.toJson($context.arguments.email),
+            "phone": $utils.toJson($context.arguments.phone),
+            "address": $utils.toJson($context.arguments.address)
           }
         }
       ResponseMappingTemplate: |
-        $util.toJson($context.result.arguments)
+        {
+          "id": $util.toJson($context.result.id),
+          "username": $util.toJson($context.result.username),
+          "email": $util.toJson($context.result.email),
+          "phone": $util.toJson($context.result.phone),
+          "address": $util.toJson($context.result.address),
+          "createdAt": $util.toJson($util.time.nowFormatted("yyyy-MM-dd HH:mm:ssZ")),
+          "updatedAt": $util.toJson($util.time.nowFormatted("yyyy-MM-dd HH:mm:ssZ"))
+        }
