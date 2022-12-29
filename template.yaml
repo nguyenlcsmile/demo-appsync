@@ -137,3 +137,28 @@ Resources:
           "datetime": $util.toJson($util.time.nowFormatted("yyyy-MM-dd HH:mm:ssZ"))
         }
       TypeName: Mutation
+
+  addSampleDataResolver1:
+    Type: AWS::AppSync::Resolver
+    DependsOn:
+      - GraphQLSchema
+    Properties:
+      ApiId: !GetAtt chatQLApi.ApiId
+      DataSourceName: !GetAtt DataSource.Name
+      FieldName: addSampleData1
+      Kind: UNIT
+      RequestMappingTemplate: |
+        {
+          "version": "2018-05-29",
+          "payload": {
+            "id": $util.toJson($context.arguments.id),
+            "value": $util.toJson($context.arguments.value)
+          }
+        }
+      ResponseMappingTemplate: |
+        {
+          "id": $util.toJson($context.result.id),
+          "value": $util.toJson($context.result.value),
+          "datetime": $util.toJson($util.time.nowFormatted("yyyy-MM-dd HH:mm:ssZ"))
+        }
+      TypeName: Mutation
