@@ -8,7 +8,7 @@ Resources:
     Properties:
       Handler: app.index
       Runtime: python3.8
-      Timeout: 180
+      Timeout: 900
       CodeUri: myFunction/
 
   awsAppSyncServiceRole:
