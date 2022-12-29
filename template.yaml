@@ -1,6 +1,16 @@
 AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Template
 
 Resources:
+  MyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: app.index
+      Runtime: python3.8
+      Timeout: 180
+      CodeUri: myFunction/
+
   awsAppSyncServiceRole:
     Type: "AWS::IAM::Role"
     Properties:
@@ -95,6 +105,7 @@ Resources:
           subscribeToNewMessage(filter: ModelSubscriptionTodoFilterInput): SampleData
             @aws_subscribe(mutations:["addSampleData"])
         }
+
   addSampleDataResolver:
     Type: AWS::AppSync::Resolver
     DependsOn:
