@@ -53,46 +53,8 @@ Resources:
           datetime: String
         }
 
-        input ModelSubscriptionIDInput {
-          ne: ID
-          eq: ID
-          le: ID
-          lt: ID
-          ge: ID
-          gt: ID
-          contains: ID
-          notContains: ID
-          between: [ID]
-          beginsWith: ID
-          in: [ID]
-          notIn: [ID]
-        }
-
-        input ModelSubscriptionStringInput {
-          ne: String
-          eq: String
-          le: String
-          lt: String
-          ge: String
-          gt: String
-          contains: String
-          notContains: String
-          between: [String]
-          beginsWith: String
-          in: [String]
-          notIn: [String]
-        }
-
-        input ModelSubscriptionTodoFilterInput {
-          id: ModelSubscriptionIDInput
-          name: ModelSubscriptionStringInput
-          description: ModelSubscriptionStringInput
-          and: [ModelSubscriptionTodoFilterInput]
-          or: [ModelSubscriptionTodoFilterInput]
-        }
-
         type Subscription {
-          subscribeToNewMessage(filter: ModelSubscriptionTodoFilterInput): SampleData
+          subscribeToNewMessage: SampleData
             @aws_subscribe(mutations:["addSampleData"])
         }
   addSampleDataResolver:
