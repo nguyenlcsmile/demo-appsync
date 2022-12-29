@@ -56,8 +56,6 @@ def index(event, context):
         result = client.execute(document, variable_values=params)
         result1 = client.execute(document1, variable_values=params1)
 
-        if (value == 22 or value1 == 6):
-            break
         time.sleep(1)
 
     return {
