@@ -42,13 +42,21 @@ def index(event, context):
 
     while (True):
         value = randrange(100)
+        value1 = randrange(100)
+
         params = {
             'id': value,
-            'value': value + 1
+            'value': value
+        }
+
+        params1 = {
+            'id': value,
+            'value': value1
         }
         result = client.execute(document, variable_values=params)
-        result1 = client.execute(document1, variable_values=params)
-        if (value == 22):
+        result1 = client.execute(document1, variable_values=params1)
+
+        if (value == 22 or value1 == 6):
             break
         time.sleep(1)
 
