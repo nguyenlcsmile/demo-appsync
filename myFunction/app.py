@@ -14,8 +14,30 @@ def index(event, context):
     )
 
     client = Client(transport=transport, fetch_schema_from_transport=True)
-    print(client)
+
+    document = gql(
+        """
+            mutation AddSampleData($id: ID!, $value: String!) {
+                addSampleData(id: $id, value: $value) {
+                    id
+                    value
+                    datetime
+                }
+            }
+        """
+    )
+
+    listValue = [1, 2, 'Geeks', 4, 'For', 6, 'Geeks']
+
+    for i in range(len(listValue)):
+        params = {
+            'id': i,
+            'value': listValue[i]
+        }
+        result = client.execute(document, variable_values=params)
+        print(result)
+
     return {
         'statusCode': 200,
-        'body': json.dumps("test PDF")
+        'body': json.dumps("blabla")
     }
