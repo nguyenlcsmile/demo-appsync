@@ -36,6 +36,7 @@ def index(event, context):
         }
         result = client.execute(document, variable_values=params)
         print(result)
+        time.sleep(3)
 
     return {
         'statusCode': 200,
