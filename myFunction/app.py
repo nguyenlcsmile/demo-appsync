@@ -28,15 +28,16 @@ def index(event, context):
         """
     )
 
-    value = randrange(100)
-
-    while (value != 22):
+    while (True):
+        value = randrange(100)
         params = {
             'id': value,
             'value': value
         }
         result = client.execute(document, variable_values=params)
         time.sleep(1)
+        if (value == 22):
+            break
 
     return {
         'statusCode': 200,
