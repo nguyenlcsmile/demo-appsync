@@ -49,7 +49,9 @@ Resources:
           subscription: Subscription
         }
 
-        type Query {}
+        type Query {
+          listSampleData: [SampleData]
+        }
 
         type Mutation {
           addSampleData(id: ID!, value: String!): SampleData
