@@ -1,6 +1,7 @@
 import json
 import os
 import time
+from random import randrange
 from gql import Client, gql
 from gql.transport.aiohttp import AIOHTTPTransport
 
@@ -27,16 +28,15 @@ def index(event, context):
         """
     )
 
-    listValue = [1, 2, 'Geeks', 4, 'For', 6, 'Geeks']
+    value = randrange(100)
 
-    for i in range(len(listValue)):
+    while (value != 22):
         params = {
-            'id': i,
-            'value': listValue[i]
+            'id': value,
+            'value': value
         }
         result = client.execute(document, variable_values=params)
-        print(result)
-        time.sleep(3)
+        time.sleep(1)
 
     return {
         'statusCode': 200,
