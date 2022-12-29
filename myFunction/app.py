@@ -39,8 +39,9 @@ def index(event, context):
             }
         """
     )
-
+    i = 0
     while (True):
+        i = i + 1
         value = randrange(100)
         value1 = randrange(100)
 
@@ -56,7 +57,9 @@ def index(event, context):
         result = client.execute(document, variable_values=params)
         result1 = client.execute(document1, variable_values=params1)
 
-        time.sleep(1)
+        print(value, value1)
+        if (i == 100):
+            break
 
     return {
         'statusCode': 200,
