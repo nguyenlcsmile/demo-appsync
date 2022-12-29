@@ -49,15 +49,20 @@ Resources:
           subscription: Subscription
         }
 
-        type Query {
-          listSampleDatas: [SampleData]
-        }
+        type Query {}
 
         type Mutation {
           addSampleData(id: ID!, value: String!): SampleData
+          addSampleData1(id: ID!, value: String!): SampleData1
         }
 
         type SampleData {
+          id: ID!
+          value: String!
+          datetime: String
+        }
+
+        type SampleData1 {
           id: ID!
           value: String!
           datetime: String
@@ -104,6 +109,8 @@ Resources:
         type Subscription {
           subscribeToNewMessage(filter: ModelSubscriptionTodoFilterInput): SampleData
             @aws_subscribe(mutations:["addSampleData"])
+          subscribeToNewMessage1(filter: ModelSubscriptionTodoFilterInput): SampleData1
+            @aws_subscribe(mutations:["addSampleData1"])
         }
 
   addSampleDataResolver:

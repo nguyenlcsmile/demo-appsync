@@ -35,9 +35,9 @@ def index(event, context):
             'value': value
         }
         result = client.execute(document, variable_values=params)
-        time.sleep(1)
         if (value == 22):
             break
+        time.sleep(1)
 
     return {
         'statusCode': 200,
