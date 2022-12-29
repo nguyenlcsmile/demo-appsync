@@ -28,13 +28,26 @@ def index(event, context):
         """
     )
 
+    document1 = gql(
+        """
+            mutation AddSampleData1($id: ID!, $value: String!) {
+                addSampleData1(id: $id, value: $value) {
+                    id
+                    value
+                    datetime
+                }
+            }
+        """
+    )
+
     while (True):
         value = randrange(100)
         params = {
             'id': value,
-            'value': value
+            'value': value + 1
         }
         result = client.execute(document, variable_values=params)
+        result1 = client.execute(document1, variable_values=params)
         if (value == 22):
             break
         time.sleep(1)
