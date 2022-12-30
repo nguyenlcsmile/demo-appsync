@@ -39,27 +39,19 @@ def index(event, context):
             }
         """
     )
-    i = 0
-    while (True):
-        i = i + 1
-        value = randrange(100)
-        value1 = randrange(100)
-
+    for i in range(1000):
         params = {
-            'id': value,
-            'value': value
+            'id': i,
+            'value': i
         }
 
         params1 = {
-            'id': value,
-            'value': value1
+            'id': i,
+            'value': i
         }
         result = client.execute(document, variable_values=params)
         result1 = client.execute(document1, variable_values=params1)
-
-        print(value, value1)
-        if (i == 100):
-            break
+        print(i)
 
     return {
         'statusCode': 200,
