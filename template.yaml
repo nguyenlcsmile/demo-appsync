@@ -58,7 +58,7 @@ Resources:
         }
 
         type SampleData {
-          value: String!
+          value: Object!
           datetime: String
         }
 
