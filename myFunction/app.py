@@ -31,7 +31,7 @@ def index(event, context):
     data = json.load(dataJson)
     for i in range(len(data)):
         params = {
-            'value': f'{data[i]}'
+            'value': f'{data[i]}'.replace('\'', '\"')
         }
         result = client.execute(document, variable_values=params)
 
