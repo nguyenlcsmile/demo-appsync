@@ -30,13 +30,14 @@ def index(event, context):
     dataJson = open('onBoarding.json')
     data = json.load(dataJson)
     for i in range(len(data)):
-        print(i)
         params = {
-            'value': i
+            'value': f'{data[i]}'
         }
         result = client.execute(document, variable_values=params)
+
         if (i == 10):
             break
+        time.sleep(2)
 
     return {
         'statusCode': 200,
