@@ -35,8 +35,6 @@ def index(event, context):
             'value': f'{data[i]}'.replace('\'', '\"')
         }
         result = client.execute(document, variable_values=params)
-        if (i == 50):
-            break
 
     return {
         'statusCode': 200,
