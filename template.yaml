@@ -62,7 +62,6 @@ Resources:
           datetime: String
         }
 
-
         input ModelSubscriptionIDInput {
           ne: ID
           eq: ID
