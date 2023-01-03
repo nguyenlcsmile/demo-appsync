@@ -54,11 +54,11 @@ Resources:
         }
 
         type Mutation {
-          addSampleData(value: Object!): SampleData
+          addSampleData(value: String!): SampleData
         }
 
         type SampleData {
-          value: Object!
+          value: String!
           datetime: String
         }
 
