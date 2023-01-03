@@ -18,9 +18,8 @@ def index(event, context):
 
     document = gql(
         """
-            mutation AddSampleData($id: ID!, $value: Object!) {
-                addSampleData(id: $id, value: $value) {
-                    id
+            mutation AddSampleData($value: Object!) {
+                addSampleData(value: $value) {
                     value
                     datetime
                 }
