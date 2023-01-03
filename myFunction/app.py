@@ -30,6 +30,7 @@ def index(event, context):
     dataJson = open('onBoarding.json')
     data = json.load(dataJson)
     for i in range(len(data)):
+        print(i)
         params = {
             'value': i
         }
