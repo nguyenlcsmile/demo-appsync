@@ -18,7 +18,7 @@ def index(event, context):
 
     document = gql(
         """
-            mutation AddSampleData($id: ID!, $value: String!) {
+            mutation AddSampleData($id: ID!, $value: Object!) {
                 addSampleData(id: $id, value: $value) {
                     id
                     value
@@ -27,31 +27,6 @@ def index(event, context):
             }
         """
     )
-
-    document1 = gql(
-        """
-            mutation AddSampleData1($id: ID!, $value: String!) {
-                addSampleData1(id: $id, value: $value) {
-                    id
-                    value
-                    datetime
-                }
-            }
-        """
-    )
-    for i in range(500):
-        params = {
-            'id': i,
-            'value': i
-        }
-
-        params1 = {
-            'id': i,
-            'value': i
-        }
-        result = client.execute(document, variable_values=params)
-        result1 = client.execute(document1, variable_values=params1)
-        print(i)
 
     return {
         'statusCode': 200,
