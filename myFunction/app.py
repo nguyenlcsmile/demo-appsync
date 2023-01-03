@@ -8,9 +8,9 @@ from gql.transport.aiohttp import AIOHTTPTransport
 
 def index(event, context):
     transport = AIOHTTPTransport(
-        url='https://cdbw4zmkabdg7dk2ytlja5itje.appsync-api.ap-southeast-1.amazonaws.com/graphql',
+        url='https://tm4ol33pqrar3jeplycp6k6qiq.appsync-api.ap-southeast-1.amazonaws.com/graphql',
         headers={
-            'x-api-key': 'da2-yhrtgyvlwbhclasnj7jihce3xm'
+            'x-api-key': 'da2-vsys5v5lkrbsddlate3zniown4'
         }
     )
 
@@ -18,7 +18,7 @@ def index(event, context):
 
     document = gql(
         """
-            mutation AddSampleData($value: Object!) {
+            mutation AddSampleData($value: String!) {
                 addSampleData(value: $value) {
                     value
                     datetime
@@ -26,6 +26,16 @@ def index(event, context):
             }
         """
     )
+
+    dataJson = open('onBoarding.json')
+    data = json.load(dataJson)
+    for i in range(len(data)):
+        params = {
+            'value': data[i]
+        }
+        result = client.execute(document, variable_values=params)
+        if (i == 10):
+            break
 
     return {
         'statusCode': 200,
