@@ -43,6 +43,11 @@ def main(event, context):
     asyncio.run(index(event, context))
 
     return {
+        "headers": {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers": "*",
+            "Access-Control-Allow-Methods": "*",
+        },
         'statusCode': 200,
         'body': json.dumps("blabla")
     }
