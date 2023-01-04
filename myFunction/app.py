@@ -34,7 +34,7 @@ def index(event, context):
                     value
                     datetime
                 }
-                }
+            }
         """
     )
     dataJson = open('onBoarding.json')
