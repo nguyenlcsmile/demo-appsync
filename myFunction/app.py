@@ -23,7 +23,7 @@ def addFirstBoxOnboarding(statusCode, data, listInformation):
             "nameBox": data.get('step')
         })
 
-    elif (statusCode == 400 and data.step == 'Check Cust Phone'):
+    elif (statusCode == 400 and data.get('step') == 'Check Cust Phone'):
         dataDaily = {
             "total": 1,
             "success": 1,
@@ -31,7 +31,7 @@ def addFirstBoxOnboarding(statusCode, data, listInformation):
         }
         valueOnboarding.append({
             "daily": dataDaily,
-            "detailCustomer": listInformation,
+            "detailCustomers": listInformation,
             "nameBox": data.get('step')
         })
     else:
@@ -42,7 +42,7 @@ def addFirstBoxOnboarding(statusCode, data, listInformation):
         }
         valueOnboarding.append({
             "daily": dataDaily,
-            "detailCustomer": listInformation,
+            "detailCustomers": listInformation,
             "nameBox": data.get('step')
         })
 
