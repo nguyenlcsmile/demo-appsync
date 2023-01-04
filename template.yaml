@@ -3,12 +3,12 @@ Transform: AWS::Serverless-2016-10-31
 Description: Template
 
 Resources:
-  MyFunction:
+  AppSyncFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: app.index
       Runtime: python3.8
-      Timeout: 900
+      Timeout: 180
       CodeUri: myFunction/
 
   awsAppSyncServiceRole:
@@ -25,7 +25,7 @@ Resources:
               - "sts:AssumeRole"
       Path: "/"
 
-  chatQLApi:
+  graphQLApi:
     Type: "AWS::AppSync::GraphQLApi"
     Properties:
       Name: "ChatQL"
@@ -34,14 +34,14 @@ Resources:
   DataSource:
     Type: AWS::AppSync::DataSource
     Properties:
-      ApiId: !GetAtt chatQLApi.ApiId
+      ApiId: !GetAtt graphQLApi.ApiId
       Name: DataSource
       Type: NONE
 
   GraphQLSchema:
     Type: AWS::AppSync::GraphQLSchema
     Properties:
-      ApiId: !GetAtt chatQLApi.ApiId
+      ApiId: !GetAtt graphQLApi.ApiId
       Definition: |
         schema {
           query: Query
@@ -110,7 +110,7 @@ Resources:
     DependsOn:
       - GraphQLSchema
     Properties:
-      ApiId: !GetAtt chatQLApi.ApiId
+      ApiId: !GetAtt graphQLApi.ApiId
       DataSourceName: !GetAtt DataSource.Name
       FieldName: addSampleData
       Kind: UNIT
