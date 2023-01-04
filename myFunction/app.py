@@ -158,7 +158,7 @@ async def index(event, context):
 
         for data in valueOnboarding:
             params = {
-                'value': f'{data}'
+                'value': f'{data}'.replace('\'', '\"')
             }
             result = await client.execute(document, variable_values=params)
 
