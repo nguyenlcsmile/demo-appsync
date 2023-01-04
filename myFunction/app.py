@@ -79,7 +79,9 @@ def index(event, context):
         """
     )
     
+    i = 0
     for data in dataJson:
+        i += 1
         dataDetail = data.get('dataDetail')
         statusCode = dataDetail.get('statusCode')
         listInformations = []
@@ -154,12 +156,12 @@ def index(event, context):
                     })
                 addFirstBoxOnboarding(statusCode, data, listInformations)
 
-    if (len(valueOnboarding) != 0):
-        for data in valueOnboarding:
-            params = {
-                'value': f'{data}'.replace('\'', '\"')
-            }
-            result = client.execute(document, variable_values=params)
+        if (i == 20):
+            for data in valueOnboarding:
+                params = {
+                    'value': f'{data}'.replace('\'', '\"')
+                }
+                result = client.execute(document, variable_values=params)
 
     return {
         "headers": {
