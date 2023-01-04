@@ -28,17 +28,6 @@ async def index(event, context):
             """
         )
 
-        document1 = gql(
-            """
-                subscription SubscribeToNewMessage1($filter: ModelSubscriptionTodoFilterInput) {
-                    subscribeToNewMessage1(filter: $filter) {
-                        value
-                        datetime
-                    }
-                }
-            """
-        )
-
         dataJson = open('onBoarding.json')
         data = json.load(dataJson)
 
@@ -47,10 +36,6 @@ async def index(event, context):
                 'value': f'{data[i]}'.replace('\'', '\"')
             }
             result = await client.execute(document, variable_values=params)
-
-            if (i == 20):
-                result = await client.execute(document1)
-                print(result)
     return
 
 
