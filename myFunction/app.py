@@ -57,7 +57,7 @@ def checkValueExists(data, dataCheck):
         return False
 
 
-async def index(event, context):
+def index(event, context):
     transport = AIOHTTPTransport(
         url='https://tm4ol33pqrar3jeplycp6k6qiq.appsync-api.ap-southeast-1.amazonaws.com/graphql',
         headers={
@@ -65,108 +65,102 @@ async def index(event, context):
         }
     )
 
-    async with Client(transport=transport, fetch_schema_from_transport=True,) as client:
+    dataJson = open('onBoarding.json')
+    dataJson = json.load(dataJson)
 
-        document = gql(
-            """
-                mutation AddSampleData($value: String!) {
-                    addSampleData(value: $value) {
-                        value
-                        datetime
+    for data in dataJson[:15]:
+        dataDetail = data.get('dataDetail')
+        statusCode = dataDetail.get('statusCode')
+        listInformations = []
+        nameBoxs = []
+        valueDaily = []
+
+        if (len(valueOnboarding) != 0):
+            for item in valueOnboarding:
+                if (item.get('nameBox')):
+                    nameBoxs.append(item.get('nameBox'))
+                if (item.get('daily')):
+                    valueDaily.append(item.get('daily'))
+                if (len(item.get('detailCustomers')) != 0):
+                    listInformations.append(item.get('detailCustomers'))
+        else:
+            if (statusCode or data.get('phone')):
+                listInformations.append({
+                    "statusCode": statusCode,
+                    "phone": data.get('phone'),
+                    "url": dataDetail.get('url'),
+                    "cifId": data.get('cifId')
+                })
+
+        if (len(valueOnboarding) == 0 and data):
+            addFirstBoxOnboarding(statusCode, data, listInformations)
+
+        elif (len(valueOnboarding) != 0 and data):
+            if (data.get('step') in nameBoxs):
+                index = nameBoxs.index(data.get('step'))
+                dataDaily = valueDaily[index]
+                listInformation = listInformations[index]
+
+                if (data.get('phone') or dataDetail.get('statusCode') or data.get('cifId')):
+                    dataAdd = {
+                        "statusCode": dataDetail.get('statusCode'),
+                        "phone": data.get('phone'),
+                        "url": dataDetail.get('url'),
+                        "cifId": data.get('cifId')
                     }
-                }
-            """
-        )
+                    checkExist = checkValueExists(listInformations, data)
 
-        dataJson = open('onBoarding.json')
-        dataJson = json.load(dataJson)
+                    if (checkExist == False):
+                        listInformation.append(dataAdd)
 
-        for data in dataJson[:15]:
-            dataDetail = data.get('dataDetail')
-            statusCode = dataDetail.get('statusCode')
-            listInformations = []
-            nameBoxs = []
-            valueDaily = []
+                    if (statusCode == 200 or (statusCode == 400 and data.get('step') == 'Check Customer Phone')):
+                        dataDailyUpdate = {
+                            "total": dataDaily.get("total") + 1,
+                            "success": dataDaily.get("success") + 1,
+                            "failure": dataDaily.get("failure")
+                        }
+                    else:
+                        dataDailyUpdate = {
+                            "total":  dataDaily.get("total") + 1,
+                            "success": dataDaily.get("success"),
+                            "failure": dataDaily.get("failure") + 1
+                        }
 
-            if (len(valueOnboarding) != 0):
-                for item in valueOnboarding:
-                    if (item.get('nameBox')):
-                        nameBoxs.append(item.get('nameBox'))
-                    if (item.get('daily')):
-                        valueDaily.append(item.get('daily'))
-                    if (len(item.get('detailCustomers')) != 0):
-                        listInformations.append(item.get('detailCustomers'))
+                    dataDispatch = {
+                        "daily": dataDailyUpdate,
+                        "detailCustomers": listInformation,
+                        "nameBox": data.get('step')
+                    }
+                valueOnboarding[index] = dataDispatch
             else:
-                if (statusCode or data.get('phone')):
+                listInformations = []
+                if (data.get('phone') or dataDetail.get('statusCode')):
                     listInformations.append({
-                        "statusCode": statusCode,
+                        "statusCode": dataDetail.get('statusCode'),
                         "phone": data.get('phone'),
                         "url": dataDetail.get('url'),
                         "cifId": data.get('cifId')
                     })
-
-            if (len(valueOnboarding) == 0 and data):
                 addFirstBoxOnboarding(statusCode, data, listInformations)
 
-            elif (len(valueOnboarding) != 0 and data):
-                if (data.get('step') in nameBoxs):
-                    index = nameBoxs.index(data.get('step'))
-                    dataDaily = valueDaily[index]
-                    listInformation = listInformations[index]
+    client = Client(transport=transport, fetch_schema_from_transport=True,)
+    document = gql(
+        """
+            mutation AddSampleData($value: String!) {
+                addSampleData(value: $value) {
+                    value
+                    datetime
+                }
+            }
+        """
+    )
 
-                    if (data.get('phone') or dataDetail.get('statusCode') or data.get('cifId')):
-                        dataAdd = {
-                            "statusCode": dataDetail.get('statusCode'),
-                            "phone": data.get('phone'),
-                            "url": dataDetail.get('url'),
-                            "cifId": data.get('cifId')
-                        }
-                        checkExist = checkValueExists(listInformations, data)
-
-                        if (checkExist == False):
-                            listInformation.append(dataAdd)
-
-                        if (statusCode == 200 or (statusCode == 400 and data.get('step') == 'Check Customer Phone')):
-                            dataDailyUpdate = {
-                                "total": dataDaily.get("total") + 1,
-                                "success": dataDaily.get("success") + 1,
-                                "failure": dataDaily.get("failure")
-                            }
-                        else:
-                            dataDailyUpdate = {
-                                "total":  dataDaily.get("total") + 1,
-                                "success": dataDaily.get("success"),
-                                "failure": dataDaily.get("failure") + 1
-                            }
-
-                        dataDispatch = {
-                            "daily": dataDailyUpdate,
-                            "detailCustomers": listInformation,
-                            "nameBox": data.get('step')
-                        }
-                    valueOnboarding[index] = dataDispatch
-                else:
-                    listInformations = []
-                    if (data.get('phone') or dataDetail.get('statusCode')):
-                        listInformations.append({
-                            "statusCode": dataDetail.get('statusCode'),
-                            "phone": data.get('phone'),
-                            "url": dataDetail.get('url'),
-                            "cifId": data.get('cifId')
-                        })
-                    addFirstBoxOnboarding(statusCode, data, listInformations)
-
+    if (len(valueOnboarding) != 0):
         for data in valueOnboarding:
             params = {
                 'value': f'{data}'.replace('\'', '\"')
             }
-            result = await client.execute(document, variable_values=params)
-
-    return
-
-
-def main(event, context):
-    asyncio.run(index(event, context))
+            result = client.execute(document, variable_values=params)
 
     return {
         "headers": {
