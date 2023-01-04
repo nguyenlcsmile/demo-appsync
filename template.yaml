@@ -6,7 +6,7 @@ Resources:
   MyFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: app.index
+      Handler: app.main
       Runtime: python3.8
       Timeout: 900
       CodeUri: myFunction/

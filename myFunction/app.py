@@ -51,6 +51,11 @@ async def index(event, context):
             if (i == 20):
                 result = await client.execute(document1)
                 print(result)
+    return
+
+
+def main(event, context):
+    asyncio.run(index(event, context))
 
     return {
         'statusCode': 200,
