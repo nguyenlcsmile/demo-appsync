@@ -51,20 +51,13 @@ Resources:
 
         type Query {
           listSampleData: [SampleData]
-          listSampleData1: [SampleData1]
         }
 
         type Mutation {
           addSampleData(value: String!): SampleData
-          addSampleData1(value: String!): SampleData1
         }
 
         type SampleData {
-          value: String!
-          datetime: String
-        }
-
-        type SampleData1 {
           value: String!
           datetime: String
         }
@@ -110,8 +103,6 @@ Resources:
         type Subscription {
           subscribeToNewMessage(filter: ModelSubscriptionTodoFilterInput): SampleData
             @aws_subscribe(mutations:["addSampleData"])
-          subscribeToNewMessage1(filter: ModelSubscriptionTodoFilterInput): SampleData1
-            @aws_subscribe(mutations:["addSampleData1"])
         }
 
   addSampleDataResolver:
@@ -122,29 +113,6 @@ Resources:
       ApiId: !GetAtt chatQLApi.ApiId
       DataSourceName: !GetAtt DataSource.Name
       FieldName: addSampleData
-      Kind: UNIT
-      RequestMappingTemplate: |
-        {
-          "version": "2018-05-29",
-          "payload": {
-            "value": $util.toJson($context.arguments.value)
-          }
-        }
-      ResponseMappingTemplate: |
-        {
-          "value": $util.toJson($context.result.value),
-          "datetime": $util.toJson($util.time.nowFormatted("yyyy-MM-dd HH:mm:ssZ"))
-        }
-      TypeName: Mutation
-
-  addSampleData1Resolver:
-    Type: AWS::AppSync::Resolver
-    DependsOn:
-      - GraphQLSchema
-    Properties:
-      ApiId: !GetAtt chatQLApi.ApiId
-      DataSourceName: !GetAtt DataSource.Name
-      FieldName: addSampleData1
       Kind: UNIT
       RequestMappingTemplate: |
         {
