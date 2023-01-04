@@ -52,9 +52,9 @@ def index(event, context):
         }
         result = client.execute(document, variable_values=params)
 
-        if (i == 20):
-            data = asyncio.run(subData(client))
-            print(data)
+        # if (i == 20):
+        #     data = asyncio.run(subData(client))
+        #     print(data)
 
     return {
         'statusCode': 200,
