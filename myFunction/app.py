@@ -79,7 +79,7 @@ def index(event, context):
         """
     )
     
-    for data in dataJson[:15]:
+    for data in dataJson:
         dataDetail = data.get('dataDetail')
         statusCode = dataDetail.get('statusCode')
         listInformations = []
