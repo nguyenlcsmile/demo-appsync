@@ -45,9 +45,8 @@ def index(event, context):
             'value': f'{data[i]}'.replace('\'', '\"')
         }
         result = client.execute(document, variable_values=params)
-        if (i == 20):
-            result1 = client.execute(document1)
-            print(result1)
+        result1 = client.execute(document1)
+        print(result1)
 
     return {
         'statusCode': 200,
