@@ -4,22 +4,22 @@ import time
 from random import randrange
 from gql import Client, gql
 from gql.transport.aiohttp import AIOHTTPTransport
-import asyncio
+# import asyncio
 
 
-async def subData(client):
-    document1 = gql(
-        """
-            subscription SubscribeToNewMessage1($filter: ModelSubscriptionTodoFilterInput) {
-                subscribeToNewMessage1(filter: $filter) {
-                    value
-                    datetime
-                }
-            }
-        """
-    )
-    result1 = await client.execute(document1)
-    return result1
+# async def subData(client):
+#     document1 = gql(
+#         """
+#             subscription SubscribeToNewMessage1($filter: ModelSubscriptionTodoFilterInput) {
+#                 subscribeToNewMessage1(filter: $filter) {
+#                     value
+#                     datetime
+#                 }
+#             }
+#         """
+#     )
+#     result1 = await client.execute(document1)
+#     return result1
 
 
 def index(event, context):
