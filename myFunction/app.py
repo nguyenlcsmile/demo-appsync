@@ -9,52 +9,52 @@ import asyncio
 valueOnboarding = []
 
 
-def addFirstBoxOnboarding(statusCode, data, listInformation):
-    if (statusCode == 200):
-        dataDaily = {
-            "total": 1,
-            "success": 1,
-            "failure": 0
-        }
+# def addFirstBoxOnboarding(statusCode, data, listInformation):
+#     if (statusCode == 200):
+#         dataDaily = {
+#             "total": 1,
+#             "success": 1,
+#             "failure": 0
+#         }
 
-        valueOnboarding.append({
-            "daily": dataDaily,
-            "detailCustomers": listInformation,
-            "nameBox": data.get('step')
-        })
+#         valueOnboarding.append({
+#             "daily": dataDaily,
+#             "detailCustomers": listInformation,
+#             "nameBox": data.get('step')
+#         })
 
-    elif (statusCode == 400 and data.get('step') == 'Check Cust Phone'):
-        dataDaily = {
-            "total": 1,
-            "success": 1,
-            "failure": 0
-        }
-        valueOnboarding.append({
-            "daily": dataDaily,
-            "detailCustomers": listInformation,
-            "nameBox": data.get('step')
-        })
-    else:
-        dataDaily = {
-            "total": 1,
-            "success": 0,
-            "failure": 1
-        }
-        valueOnboarding.append({
-            "daily": dataDaily,
-            "detailCustomers": listInformation,
-            "nameBox": data.get('step')
-        })
+#     elif (statusCode == 400 and data.get('step') == 'Check Cust Phone'):
+#         dataDaily = {
+#             "total": 1,
+#             "success": 1,
+#             "failure": 0
+#         }
+#         valueOnboarding.append({
+#             "daily": dataDaily,
+#             "detailCustomers": listInformation,
+#             "nameBox": data.get('step')
+#         })
+#     else:
+#         dataDaily = {
+#             "total": 1,
+#             "success": 0,
+#             "failure": 1
+#         }
+#         valueOnboarding.append({
+#             "daily": dataDaily,
+#             "detailCustomers": listInformation,
+#             "nameBox": data.get('step')
+#         })
 
 
-def checkValueExists(data, dataCheck):
-    for item in data:
-        if (item[0].get('phone') == dataCheck.get('phone') and
-            item[0].get('cifId') == dataCheck.get('cifId') and
-            item[0].get('url') == dataCheck.get('dataDetail').get('url') and
-                item[0].get('statusCode') == dataCheck.get('dataDetail').get('statusCode')):
-            return True
-        return False
+# def checkValueExists(data, dataCheck):
+#     for item in data:
+#         if (item[0].get('phone') == dataCheck.get('phone') and
+#             item[0].get('cifId') == dataCheck.get('cifId') and
+#             item[0].get('url') == dataCheck.get('dataDetail').get('url') and
+#                 item[0].get('statusCode') == dataCheck.get('dataDetail').get('statusCode')):
+#             return True
+#         return False
 
 
 def index(event, context):
