@@ -6,7 +6,7 @@ from gql import Client, gql
 from gql.transport.aiohttp import AIOHTTPTransport
 import asyncio
 
-valueOnboarding = []
+# valueOnboarding = []
 
 
 # def addFirstBoxOnboarding(statusCode, data, listInformation):
@@ -78,7 +78,7 @@ def index(event, context):
             }
         """
     )
-    for i in range(len(dataJson), 5):
+    for i in range(0, len(dataJson), 5):
         if ((i+5) >= len(dataJson)):
             dataPub = dataJson[i:]
         else:
