@@ -65,8 +65,67 @@ def index(event, context):
         }
     )
 
-    dataJson = open('onBoarding.json')
-    dataJson = json.load(dataJson)
+    # dataJson = open('onBoarding.json')
+    # dataJson = json.load(dataJson)
+    dataJson = [
+        {
+            "check_cust_box": {"total": 105, "success": 2573, "fail": 29},
+            "submit_ekyc_box": {"total": 24, "success": 77, "fail": 7},
+            "submit_kyc_status_box": {"total": 31, "success": 468, "fail": 24},
+            "video_statement_box": {"total": 0, "success": 17, "fail": 0},
+            "face_match_box": {"total": 19, "success": 271, "fail": 127},
+            "get_contract_box": {"total": 18, "success": 151, "fail": 102},
+            "sign_contract_box": {"total": 11, "success": 44, "fail": 2},
+            "onboarding_new_customer": 402,
+            "pass_onboarding": 10,
+            "issue_card_func": {"total": 8, "success": 10, "fail": 3},
+            "create_signature_func": {"total": 1, "success": 2, "fail": 4},
+            "request_econtract_func": {"total": 0, "success": 0, "fail": 0},
+            "request_statement_func": {"total": 0, "success": 0, "fail": 0},
+            "cash_withdrawal_func": {"total": 1, "success": 15, "fail": 5},
+            "open_td_func": {"total": 0, "success": 2, "fail": 0},
+            "closure_td_func": {"total": 0, "success": 1, "fail": 0},
+            "uuid": "2023-01-04-today"
+        },
+        {
+            "check_cust_box": {"total": 105, "success": 2573, "fail": 29},
+            "submit_ekyc_box": {"total": 24, "success": 77, "fail": 7},
+            "submit_kyc_status_box": {"total": 31, "success": 468, "fail": 24},
+            "video_statement_box": {"total": 0, "success": 17, "fail": 0},
+            "face_match_box": {"total": 19, "success": 271, "fail": 127},
+            "get_contract_box": {"total": 18, "success": 151, "fail": 102},
+            "sign_contract_box": {"total": 11, "success": 44, "fail": 2},
+            "onboarding_new_customer": 402,
+            "pass_onboarding": 10,
+            "issue_card_func": {"total": 8, "success": 10, "fail": 3},
+            "create_signature_func": {"total": 1, "success": 2, "fail": 4},
+            "request_econtract_func": {"total": 0, "success": 0, "fail": 0},
+            "request_statement_func": {"total": 0, "success": 0, "fail": 0},
+            "cash_withdrawal_func": {"total": 1, "success": 15, "fail": 5},
+            "open_td_func": {"total": 0, "success": 2, "fail": 0},
+            "closure_td_func": {"total": 0, "success": 1, "fail": 0},
+            "uuid": "2023-01-04-today"
+        },
+        {
+            "check_cust_box": {"total": 105, "success": 2573, "fail": 29},
+            "submit_ekyc_box": {"total": 24, "success": 77, "fail": 7},
+            "submit_kyc_status_box": {"total": 31, "success": 468, "fail": 24},
+            "video_statement_box": {"total": 0, "success": 17, "fail": 0},
+            "face_match_box": {"total": 19, "success": 271, "fail": 127},
+            "get_contract_box": {"total": 18, "success": 151, "fail": 102},
+            "sign_contract_box": {"total": 11, "success": 44, "fail": 2},
+            "onboarding_new_customer": 402,
+            "pass_onboarding": 10,
+            "issue_card_func": {"total": 8, "success": 10, "fail": 3},
+            "create_signature_func": {"total": 1, "success": 2, "fail": 4},
+            "request_econtract_func": {"total": 0, "success": 0, "fail": 0},
+            "request_statement_func": {"total": 0, "success": 0, "fail": 0},
+            "cash_withdrawal_func": {"total": 1, "success": 15, "fail": 5},
+            "open_td_func": {"total": 0, "success": 2, "fail": 0},
+            "closure_td_func": {"total": 0, "success": 1, "fail": 0},
+            "uuid": "2023-01-04-today"
+        }
+    ]
     client = Client(transport=transport, fetch_schema_from_transport=True,)
     document = gql(
         """
@@ -78,13 +137,9 @@ def index(event, context):
             }
         """
     )
-    for i in range(0, len(dataJson), 5):
-        if ((i+5) >= len(dataJson)):
-            dataPub = dataJson[i:]
-        else:
-            dataPub = dataJson[i:i+5]
+    for data in dataJson:
         params = {
-            'value': f'{dataPub}'.replace('\'', '\"')
+            'value': f'{data}'.replace('\'', '\"')
         }
         result = client.execute(document, variable_values=params)
     # for data in dataJson[:15]:
