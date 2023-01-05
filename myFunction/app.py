@@ -78,9 +78,13 @@ def index(event, context):
             }
         """
     )
-    for data in dataJson:
+    for i in range(len(dataJson), 5):
+        if ((i+5) >= len(dataJson)):
+            dataPub = dataJson[i:]
+        else:
+            dataPub = dataJson[i:i+5]
         params = {
-            'value': f'{data}'.replace('\'', '\"')
+            'value': f'{dataPub}'.replace('\'', '\"')
         }
         result = client.execute(document, variable_values=params)
     # for data in dataJson[:15]:
