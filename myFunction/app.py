@@ -88,7 +88,7 @@ def index(event, context):
             "uuid": "2023-01-04-today"
         },
         {
-            "check_cust_box": {"total": 105, "success": 2573, "fail": 29},
+            "check_cust_box": {"total": 100, "success": 434, "fail": 10},
             "submit_ekyc_box": {"total": 24, "success": 77, "fail": 7},
             "submit_kyc_status_box": {"total": 31, "success": 468, "fail": 24},
             "video_statement_box": {"total": 0, "success": 17, "fail": 0},
@@ -107,7 +107,7 @@ def index(event, context):
             "uuid": "2023-01-04-today"
         },
         {
-            "check_cust_box": {"total": 105, "success": 2573, "fail": 29},
+            "check_cust_box": {"total": 200, "success": 34, "fail": 10},
             "submit_ekyc_box": {"total": 24, "success": 77, "fail": 7},
             "submit_kyc_status_box": {"total": 31, "success": 468, "fail": 24},
             "video_statement_box": {"total": 0, "success": 17, "fail": 0},
