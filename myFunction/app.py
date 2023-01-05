@@ -107,23 +107,23 @@ def filterFunctionals(functionals):
 
 
 def index(event, context):
-    transport = AIOHTTPTransport(
-        url='https://tm4ol33pqrar3jeplycp6k6qiq.appsync-api.ap-southeast-1.amazonaws.com/graphql',
-        headers={
-            'x-api-key': 'da2-vsys5v5lkrbsddlate3zniown4'
-        }
-    )
+    # transport = AIOHTTPTransport(
+    #     url='https://tm4ol33pqrar3jeplycp6k6qiq.appsync-api.ap-southeast-1.amazonaws.com/graphql',
+    #     headers={
+    #         'x-api-key': 'da2-vsys5v5lkrbsddlate3zniown4'
+    #     }
+    # )
 
-    document = gql(
-        """
-            mutation AddSampleData($value: String!) {
-                addSampleData(value: $value) {
-                    value
-                    datetime
-                }
-            }
-        """
-    )
+    # document = gql(
+    #     """
+    #         mutation AddSampleData($value: String!) {
+    #             addSampleData(value: $value) {
+    #                 value
+    #                 datetime
+    #             }
+    #         }
+    #     """
+    # )
 
     logData = []
     arr_source = []
@@ -140,14 +140,14 @@ def index(event, context):
 
     json_object = json.dumps(logData, indent=4)
     dataJson = json.load(json_object)
+    print(dataJson)
+    # client = Client(transport=transport, fetch_schema_from_transport=True,)
 
-    client = Client(transport=transport, fetch_schema_from_transport=True,)
-
-    for data in dataJson:
-        params = {
-            'value': f'{data}'.replace('\'', '\"')
-        }
-        result = client.execute(document, variable_values=params)
+    # for data in dataJson:
+    #     params = {
+    #         'value': f'{data}'.replace('\'', '\"')
+    #     }
+    #     result = client.execute(document, variable_values=params)
 
     return {
         'statusCode': 200,
