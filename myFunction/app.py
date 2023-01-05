@@ -6,55 +6,104 @@ from gql import Client, gql
 from gql.transport.aiohttp import AIOHTTPTransport
 import asyncio
 
-valueOnboarding = []
+
+def filterOnBoarding(onBoarding):
+    listStep = []
+
+    for t in onBoarding:
+        if (t["eventCode"] == 'JAOFuntion./v1/jao/check-cust/GET'):
+            item = {"dashboard": "OnBoarding",
+                    "step": "Check Customer Phone"
+                    }
+            t.update(item)
+            listStep.append(t)
+        elif (t["eventCode"] == 'KYCFunction./v1/kyc/submit/POST'):
+            item = {"dashboard": "OnBoarding",
+                    "step": "Submit EKYC"
+                    }
+            t.update(item)
+            listStep.append(t)
+        elif (t["eventCode"] == 'TopUpFuntion./v1/top-up/kyc-status/POST'):
+            item = {"dashboard": "OnBoarding",
+                    "step": "Check KYC Status"
+                    }
+            t.update(item)
+            listStep.append(t)
+        elif (t["eventCode"] == 'ProducerFunction./v1/producer/push/PUT'):
+            item = {"dashboard": "OnBoarding",
+                    "step": "Video Statement"
+                    }
+            t.update(item)
+            listStep.append(t)
+        elif (t["eventCode"] == 'JAOFuntion./v1/jao/check-face-match/POST'):
+            item = {"dashboard": "OnBoarding",
+                    "step": "Face Match"
+                    }
+            t.update(item)
+            listStep.append(t)
+        elif (t["eventCode"] == 'JAOFuntion./v1/jao/jao-contract/POST'):
+            item = {"dashboard": "OnBoarding",
+                    "step": "Get Contract"
+                    }
+            t.update(item)
+            listStep.append(t)
+        elif (t["eventCode"] == 'JAOFuntion./v1/jao/verify-otp/POST'):
+            item = {"dashboard": "OnBoarding",
+                    "step": "Sign Contract"
+                    }
+            t.update(item)
+            listStep.append(t)
+    # print(listStep)
+    return listStep
 
 
-# def addFirstBoxOnboarding(statusCode, data, listInformation):
-#     if (statusCode == 200):
-#         dataDaily = {
-#             "total": 1,
-#             "success": 1,
-#             "failure": 0
-#         }
+def filterFunctionals(functionals):
+    listFunctionals = []
 
-#         valueOnboarding.append({
-#             "daily": dataDaily,
-#             "detailCustomers": listInformation,
-#             "nameBox": data.get('step')
-#         })
+    for t in functionals:
+        if (t["eventCode"] == 'ServiceFunction./v1/service/issue-card/POST'):
+            item = {"dashboard": "Functionals",
+                    "nameFunctionals": "Issue Card"
+                    }
+            t.update(item)
+            listFunctionals.append(t)
+        elif (t["eventCode"] == 'ServiceFunction./v1/services/request-statement/POST'):
+            item = {"dashboard": "Functionals",
+                    "nameFunctionals": "E-Statement"
+                    }
+            t.update(item)
+            listFunctionals.append(t)
+        elif (t["eventCode"] == 'ServiceFunction./v1/services/request-econtract/POST'):
+            item = {"dashboard": "Functionals",
+                    "nameFunctionals": "E-Contract"
+                    }
+            t.update(item)
+            listFunctionals.append(t)
+        elif (t["eventCode"] == 'ServiceFunction./v1/services/create-signature/POST'):
+            item = {"dashboard": "Functionals",
+                    "nameFunctionals": "Create Signature"
+                    }
+            t.update(item)
+            listFunctionals.append(t)
+        elif (t["eventCode"] == 'POP.CashWithdrawalVPBankCounter./api/v1/cwdr/vpbank/txn/POST'):
+            item = {"dashboard": "Functionals",
+                    "nameFunctionals": "Cash with Drawal"
+                    }
+            t.update(item)
+            listFunctionals.append(t)
+        elif (t["eventCode"] == 'POP.OpenTDAccountFunction./api/v1/fin/deposit/POST'):
+            item = {"dashboard": "Functionals",
+                    "nameFunctionals": "Open TD Account"
+                    }
+            t.update(item)
+        elif (t["eventCode"] == 'POP.OpenTDAccountFunction./api/v1/fin/deposit/{accountId}/closure/POST'):
+            item = {"dashboard": "Functionals",
+                    "nameFunctionals": "Terminate TD Acount"
+                    }
+            t.update(item)
+            listFunctionals.append(t)
 
-#     elif (statusCode == 400 and data.get('step') == 'Check Cust Phone'):
-#         dataDaily = {
-#             "total": 1,
-#             "success": 1,
-#             "failure": 0
-#         }
-#         valueOnboarding.append({
-#             "daily": dataDaily,
-#             "detailCustomers": listInformation,
-#             "nameBox": data.get('step')
-#         })
-#     else:
-#         dataDaily = {
-#             "total": 1,
-#             "success": 0,
-#             "failure": 1
-#         }
-#         valueOnboarding.append({
-#             "daily": dataDaily,
-#             "detailCustomers": listInformation,
-#             "nameBox": data.get('step')
-#         })
-
-
-# def checkValueExists(data, dataCheck):
-#     for item in data:
-#         if (item[0].get('phone') == dataCheck.get('phone') and
-#             item[0].get('cifId') == dataCheck.get('cifId') and
-#             item[0].get('url') == dataCheck.get('dataDetail').get('url') and
-#                 item[0].get('statusCode') == dataCheck.get('dataDetail').get('statusCode')):
-#             return True
-#         return False
+    return listFunctionals
 
 
 def index(event, context):
@@ -65,9 +114,6 @@ def index(event, context):
         }
     )
 
-    dataJson = open('onBoarding.json')
-    dataJson = json.load(dataJson)
-    client = Client(transport=transport, fetch_schema_from_transport=True,)
     document = gql(
         """
             mutation AddSampleData($value: String!) {
@@ -78,99 +124,32 @@ def index(event, context):
             }
         """
     )
+
+    logData = []
+    arr_source = []
+    data = json.load(event)
+    for item in data:
+        arr_source.append(item["_source"])
+    onBoard = filterOnBoarding(arr_source)
+    func = filterFunctionals(arr_source)
+
+    for ob in onBoard:
+        logData.append(ob)
+    for f in func:
+        logData.append(f)
+
+    json_object = json.dumps(logData, indent=4)
+    dataJson = json.load(json_object)
+
+    client = Client(transport=transport, fetch_schema_from_transport=True,)
+
     for data in dataJson:
         params = {
             'value': f'{data}'.replace('\'', '\"')
         }
         result = client.execute(document, variable_values=params)
-    # for data in dataJson[:15]:
-    #     dataDetail = data.get('dataDetail')
-    #     statusCode = dataDetail.get('statusCode')
-    #     listInformations = []
-    #     nameBoxs = []
-    #     valueDaily = []
-
-    #     if (len(valueOnboarding) != 0):
-    #         for item in valueOnboarding:
-    #             if (item.get('nameBox')):
-    #                 nameBoxs.append(item.get('nameBox'))
-    #             if (item.get('daily')):
-    #                 valueDaily.append(item.get('daily'))
-    #             if (len(item.get('detailCustomers')) != 0):
-    #                 listInformations.append(item.get('detailCustomers'))
-    #     else:
-    #         if (statusCode or data.get('phone')):
-    #             listInformations.append({
-    #                 "statusCode": statusCode,
-    #                 "phone": data.get('phone'),
-    #                 "url": dataDetail.get('url'),
-    #                 "cifId": data.get('cifId')
-    #             })
-
-    #     if (len(valueOnboarding) == 0 and data):
-    #         addFirstBoxOnboarding(statusCode, data, listInformations)
-
-    #     elif (len(valueOnboarding) != 0 and data):
-    #         if (data.get('step') in nameBoxs):
-    #             index = nameBoxs.index(data.get('step'))
-    #             dataDaily = valueDaily[index]
-    #             listInformation = listInformations[index]
-
-    #             if (data.get('phone') or dataDetail.get('statusCode') or data.get('cifId')):
-    #                 dataAdd = {
-    #                     "statusCode": dataDetail.get('statusCode'),
-    #                     "phone": data.get('phone'),
-    #                     "url": dataDetail.get('url'),
-    #                     "cifId": data.get('cifId')
-    #                 }
-    #                 checkExist = checkValueExists(listInformations, data)
-
-    #                 if (checkExist == False):
-    #                     listInformation.append(dataAdd)
-
-    #                 if (statusCode == 200 or (statusCode == 400 and data.get('step') == 'Check Customer Phone')):
-    #                     dataDailyUpdate = {
-    #                         "total": dataDaily.get("total") + 1,
-    #                         "success": dataDaily.get("success") + 1,
-    #                         "failure": dataDaily.get("failure")
-    #                     }
-    #                 else:
-    #                     dataDailyUpdate = {
-    #                         "total":  dataDaily.get("total") + 1,
-    #                         "success": dataDaily.get("success"),
-    #                         "failure": dataDaily.get("failure") + 1
-    #                     }
-
-    #                 dataDispatch = {
-    #                     "daily": dataDailyUpdate,
-    #                     "detailCustomers": listInformation,
-    #                     "nameBox": data.get('step')
-    #                 }
-    #             valueOnboarding[index] = dataDispatch
-    #         else:
-    #             listInformations = []
-    #             if (data.get('phone') or dataDetail.get('statusCode')):
-    #                 listInformations.append({
-    #                     "statusCode": dataDetail.get('statusCode'),
-    #                     "phone": data.get('phone'),
-    #                     "url": dataDetail.get('url'),
-    #                     "cifId": data.get('cifId')
-    #                 })
-    #             addFirstBoxOnboarding(statusCode, data, listInformations)
-
-    # if (len(valueOnboarding) != 0):
-    #     for data in valueOnboarding:
-    #         params = {
-    #             'value': f'{data}'.replace('\'', '\"')
-    #         }
-    #         result = client.execute(document, variable_values=params)
 
     return {
-        "headers": {
-            "Access-Control-Allow-Origin": "*",
-            "Access-Control-Allow-Headers": "*",
-            "Access-Control-Allow-Methods": "*",
-        },
         'statusCode': 200,
         'body': json.dumps("blabla")
     }
